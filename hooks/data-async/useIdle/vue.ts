@@ -1,28 +1,46 @@
-import { ref, onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref, Ref } from 'vue';
 
-export function useIdle(ms: number = 3000) {
+interface UseIdleOptions {
+  timeout?: number;
+  events?: string[];
+}
+
+/**
+ * Detect when the user has been idle for a given timeout
+ * @param timeout - Idle timeout in ms (default: 60000)
+ * @param options - Optional events to listen for
+ * @returns Object with isIdle ref and reset function
+ */
+export function useIdle(
+  timeout = 60_000,
+  options: UseIdleOptions = {}
+): { isIdle: Ref<boolean>; reset: () => void } {
+  const { events = ['mousemove', 'keydown', 'scroll', 'touchstart'] } = options;
   const isIdle = ref(false);
-  let timeoutId: ReturnType<typeof setTimeout>;
+  let timerId: ReturnType<typeof setTimeout> | null = null;
 
-  const resetTimer = () => {
+  const reset = () => {
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
     isIdle.value = false;
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => isIdle.value = true, ms);
+    timerId = setTimeout(() => {
+      isIdle.value = true;
+    }, timeout);
   };
 
+  const handleEvent = () => reset();
+
   onMounted(() => {
-    ['mousemove', 'keydown', 'wheel', 'touchstart'].forEach(event => 
-      window.addEventListener(event, resetTimer)
-    );
-    resetTimer();
+    reset();
+    events.forEach((ev) => window.addEventListener(ev, handleEvent));
   });
 
   onUnmounted(() => {
-    ['mousemove', 'keydown', 'wheel', 'touchstart'].forEach(event => 
-      window.removeEventListener(event, resetTimer)
-    );
-    clearTimeout(timeoutId);
+    events.forEach((ev) => window.removeEventListener(ev, handleEvent));
+    if (timerId) clearTimeout(timerId);
   });
 
-  return isIdle;
+  return { isIdle, reset };
 }

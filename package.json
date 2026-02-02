@@ -1,16 +1,666 @@
 {
-  "name": "cross-framework-hooks",
+  "name": "@tri-hooks/library",
   "version": "1.0.0",
-  "description": "A complete cross-framework hooks library",
-  "dependencies": {
-    "react": "^18.0.0",
-    "vue": "^3.0.0",
-    "rxjs": "^7.0.0",
-    "@angular/core": "^16.0.0"
+  "description": "A comprehensive, tree-shakable hooks library for React, Vue, and Angular",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./react": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./vue": {
+      "import": "./dist/esm/index.vue.js",
+      "require": "./dist/cjs/index.vue.js",
+      "types": "./dist/types/index.vue.d.ts"
+    },
+    "./angular": {
+      "import": "./dist/esm/index.angular.js",
+      "require": "./dist/cjs/index.angular.js",
+      "types": "./dist/types/index.angular.d.ts"
+    },
+    "./hooks/data-async/useDebounce/react": {
+      "import": "./dist/esm/hooks/data-async/useDebounce/react.js",
+      "require": "./dist/cjs/hooks/data-async/useDebounce/react.js",
+      "types": "./dist/types/hooks/data-async/useDebounce/react.d.ts"
+    },
+    "./hooks/data-async/useDebounce/vue": {
+      "import": "./dist/esm/hooks/data-async/useDebounce/vue.js",
+      "require": "./dist/cjs/hooks/data-async/useDebounce/vue.js",
+      "types": "./dist/types/hooks/data-async/useDebounce/vue.d.ts"
+    },
+    "./hooks/data-async/useDebounce/angular": {
+      "import": "./dist/esm/hooks/data-async/useDebounce/angular.js",
+      "require": "./dist/cjs/hooks/data-async/useDebounce/angular.js",
+      "types": "./dist/types/hooks/data-async/useDebounce/angular.d.ts"
+    },
+    "./hooks/data-async/useThrottle/react": {
+      "import": "./dist/esm/hooks/data-async/useThrottle/react.js",
+      "require": "./dist/cjs/hooks/data-async/useThrottle/react.js",
+      "types": "./dist/types/hooks/data-async/useThrottle/react.d.ts"
+    },
+    "./hooks/data-async/useThrottle/vue": {
+      "import": "./dist/esm/hooks/data-async/useThrottle/vue.js",
+      "require": "./dist/cjs/hooks/data-async/useThrottle/vue.js",
+      "types": "./dist/types/hooks/data-async/useThrottle/vue.d.ts"
+    },
+    "./hooks/data-async/useThrottle/angular": {
+      "import": "./dist/esm/hooks/data-async/useThrottle/angular.js",
+      "require": "./dist/cjs/hooks/data-async/useThrottle/angular.js",
+      "types": "./dist/types/hooks/data-async/useThrottle/angular.d.ts"
+    },
+    "./hooks/data-async/useFetch/react": {
+      "import": "./dist/esm/hooks/data-async/useFetch/react.js",
+      "require": "./dist/cjs/hooks/data-async/useFetch/react.js",
+      "types": "./dist/types/hooks/data-async/useFetch/react.d.ts"
+    },
+    "./hooks/data-async/useFetch/vue": {
+      "import": "./dist/esm/hooks/data-async/useFetch/vue.js",
+      "require": "./dist/cjs/hooks/data-async/useFetch/vue.js",
+      "types": "./dist/types/hooks/data-async/useFetch/vue.d.ts"
+    },
+    "./hooks/data-async/useFetch/angular": {
+      "import": "./dist/esm/hooks/data-async/useFetch/angular.js",
+      "require": "./dist/cjs/hooks/data-async/useFetch/angular.js",
+      "types": "./dist/types/hooks/data-async/useFetch/angular.d.ts"
+    },
+    "./hooks/data-async/useAsync/react": {
+      "import": "./dist/esm/hooks/data-async/useAsync/react.js",
+      "require": "./dist/cjs/hooks/data-async/useAsync/react.js",
+      "types": "./dist/types/hooks/data-async/useAsync/react.d.ts"
+    },
+    "./hooks/data-async/useAsync/vue": {
+      "import": "./dist/esm/hooks/data-async/useAsync/vue.js",
+      "require": "./dist/cjs/hooks/data-async/useAsync/vue.js",
+      "types": "./dist/types/hooks/data-async/useAsync/vue.d.ts"
+    },
+    "./hooks/data-async/useAsync/angular": {
+      "import": "./dist/esm/hooks/data-async/useAsync/angular.js",
+      "require": "./dist/cjs/hooks/data-async/useAsync/angular.js",
+      "types": "./dist/types/hooks/data-async/useAsync/angular.d.ts"
+    },
+    "./hooks/state-ui/useToggle/react": {
+      "import": "./dist/esm/hooks/state-ui/useToggle/react.js",
+      "require": "./dist/cjs/hooks/state-ui/useToggle/react.js",
+      "types": "./dist/types/hooks/state-ui/useToggle/react.d.ts"
+    },
+    "./hooks/state-ui/useToggle/vue": {
+      "import": "./dist/esm/hooks/state-ui/useToggle/vue.js",
+      "require": "./dist/cjs/hooks/state-ui/useToggle/vue.js",
+      "types": "./dist/types/hooks/state-ui/useToggle/vue.d.ts"
+    },
+    "./hooks/state-ui/useToggle/angular": {
+      "import": "./dist/esm/hooks/state-ui/useToggle/angular.js",
+      "require": "./dist/cjs/hooks/state-ui/useToggle/angular.js",
+      "types": "./dist/types/hooks/state-ui/useToggle/angular.d.ts"
+    },
+    "./hooks/state-ui/useCounter/react": {
+      "import": "./dist/esm/hooks/state-ui/useCounter/react.js",
+      "require": "./dist/cjs/hooks/state-ui/useCounter/react.js",
+      "types": "./dist/types/hooks/state-ui/useCounter/react.d.ts"
+    },
+    "./hooks/state-ui/useCounter/vue": {
+      "import": "./dist/esm/hooks/state-ui/useCounter/vue.js",
+      "require": "./dist/cjs/hooks/state-ui/useCounter/vue.js",
+      "types": "./dist/types/hooks/state-ui/useCounter/vue.d.ts"
+    },
+    "./hooks/state-ui/useCounter/angular": {
+      "import": "./dist/esm/hooks/state-ui/useCounter/angular.js",
+      "require": "./dist/cjs/hooks/state-ui/useCounter/angular.js",
+      "types": "./dist/types/hooks/state-ui/useCounter/angular.d.ts"
+    },
+    "./hooks/dom-events/useIntersectionObserver/react": {
+      "import": "./dist/esm/hooks/dom-events/useIntersectionObserver/react.js",
+      "require": "./dist/cjs/hooks/dom-events/useIntersectionObserver/react.js",
+      "types": "./dist/types/hooks/dom-events/useIntersectionObserver/react.d.ts"
+    },
+    "./hooks/dom-events/useIntersectionObserver/vue": {
+      "import": "./dist/esm/hooks/dom-events/useIntersectionObserver/vue.js",
+      "require": "./dist/cjs/hooks/dom-events/useIntersectionObserver/vue.js",
+      "types": "./dist/types/hooks/dom-events/useIntersectionObserver/vue.d.ts"
+    },
+    "./hooks/dom-events/useIntersectionObserver/angular": {
+      "import": "./dist/esm/hooks/dom-events/useIntersectionObserver/angular.js",
+      "require": "./dist/cjs/hooks/dom-events/useIntersectionObserver/angular.js",
+      "types": "./dist/types/hooks/dom-events/useIntersectionObserver/angular.d.ts"
+    },
+    "./hooks/dom-events/useResizeObserver/react": {
+      "import": "./dist/esm/hooks/dom-events/useResizeObserver/react.js",
+      "require": "./dist/cjs/hooks/dom-events/useResizeObserver/react.js",
+      "types": "./dist/types/hooks/dom-events/useResizeObserver/react.d.ts"
+    },
+    "./hooks/dom-events/useResizeObserver/vue": {
+      "import": "./dist/esm/hooks/dom-events/useResizeObserver/vue.js",
+      "require": "./dist/cjs/hooks/dom-events/useResizeObserver/vue.js",
+      "types": "./dist/types/hooks/dom-events/useResizeObserver/vue.d.ts"
+    },
+    "./hooks/dom-events/useResizeObserver/angular": {
+      "import": "./dist/esm/hooks/dom-events/useResizeObserver/angular.js",
+      "require": "./dist/cjs/hooks/dom-events/useResizeObserver/angular.js",
+      "types": "./dist/types/hooks/dom-events/useResizeObserver/angular.d.ts"
+    },
+    "./hooks/storage/useLocalStorage/react": {
+      "import": "./dist/esm/hooks/storage/useLocalStorage/react.js",
+      "require": "./dist/cjs/hooks/storage/useLocalStorage/react.js",
+      "types": "./dist/types/hooks/storage/useLocalStorage/react.d.ts"
+    },
+    "./hooks/storage/useLocalStorage/vue": {
+      "import": "./dist/esm/hooks/storage/useLocalStorage/vue.js",
+      "require": "./dist/cjs/hooks/storage/useLocalStorage/vue.js",
+      "types": "./dist/types/hooks/storage/useLocalStorage/vue.d.ts"
+    },
+    "./hooks/storage/useLocalStorage/angular": {
+      "import": "./dist/esm/hooks/storage/useLocalStorage/angular.js",
+      "require": "./dist/cjs/hooks/storage/useLocalStorage/angular.js",
+      "types": "./dist/types/hooks/storage/useLocalStorage/angular.d.ts"
+    },
+    "./hooks/device-connectivity/useNetwork/react": {
+      "import": "./dist/esm/hooks/device-connectivity/useNetwork/react.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useNetwork/react.js",
+      "types": "./dist/types/hooks/device-connectivity/useNetwork/react.d.ts"
+    },
+    "./hooks/device-connectivity/useNetwork/vue": {
+      "import": "./dist/esm/hooks/device-connectivity/useNetwork/vue.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useNetwork/vue.js",
+      "types": "./dist/types/hooks/device-connectivity/useNetwork/vue.d.ts"
+    },
+    "./hooks/device-connectivity/useNetwork/angular": {
+      "import": "./dist/esm/hooks/device-connectivity/useNetwork/angular.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useNetwork/angular.js",
+      "types": "./dist/types/hooks/device-connectivity/useNetwork/angular.d.ts"
+    },
+    "./hooks/animation/useAnimationFrame/react": {
+      "import": "./dist/esm/hooks/animation/useAnimationFrame/react.js",
+      "require": "./dist/cjs/hooks/animation/useAnimationFrame/react.js",
+      "types": "./dist/types/hooks/animation/useAnimationFrame/react.d.ts"
+    },
+    "./hooks/animation/useAnimationFrame/vue": {
+      "import": "./dist/esm/hooks/animation/useAnimationFrame/vue.js",
+      "require": "./dist/cjs/hooks/animation/useAnimationFrame/vue.js",
+      "types": "./dist/types/hooks/animation/useAnimationFrame/vue.d.ts"
+    },
+    "./hooks/animation/useAnimationFrame/angular": {
+      "import": "./dist/esm/hooks/animation/useAnimationFrame/angular.js",
+      "require": "./dist/cjs/hooks/animation/useAnimationFrame/angular.js",
+      "types": "./dist/types/hooks/animation/useAnimationFrame/angular.d.ts"
+    },
+    "./hooks/notifications/useToast/react": {
+      "import": "./dist/esm/hooks/notifications/useToast/react.js",
+      "require": "./dist/cjs/hooks/notifications/useToast/react.js",
+      "types": "./dist/types/hooks/notifications/useToast/react.d.ts"
+    },
+    "./hooks/notifications/useToast/vue": {
+      "import": "./dist/esm/hooks/notifications/useToast/vue.js",
+      "require": "./dist/cjs/hooks/notifications/useToast/vue.js",
+      "types": "./dist/types/hooks/notifications/useToast/vue.d.ts"
+    },
+    "./hooks/notifications/useToast/angular": {
+      "import": "./dist/esm/hooks/notifications/useToast/angular.js",
+      "require": "./dist/cjs/hooks/notifications/useToast/angular.js",
+      "types": "./dist/types/hooks/notifications/useToast/angular.d.ts"
+    },
+    "./hooks/media/useMediaQuery/react": {
+      "import": "./dist/esm/hooks/media/useMediaQuery/react.js",
+      "require": "./dist/cjs/hooks/media/useMediaQuery/react.js",
+      "types": "./dist/types/hooks/media/useMediaQuery/react.d.ts"
+    },
+    "./hooks/media/useMediaQuery/vue": {
+      "import": "./dist/esm/hooks/media/useMediaQuery/vue.js",
+      "require": "./dist/cjs/hooks/media/useMediaQuery/vue.js",
+      "types": "./dist/types/hooks/media/useMediaQuery/vue.d.ts"
+    },
+    "./hooks/media/useMediaQuery/angular": {
+      "import": "./dist/esm/hooks/media/useMediaQuery/angular.js",
+      "require": "./dist/cjs/hooks/media/useMediaQuery/angular.js",
+      "types": "./dist/types/hooks/media/useMediaQuery/angular.d.ts"
+    },
+    "./hooks/browser-apis/usePageVisibility/react": {
+      "import": "./dist/esm/hooks/browser-apis/usePageVisibility/react.js",
+      "require": "./dist/cjs/hooks/browser-apis/usePageVisibility/react.js",
+      "types": "./dist/types/hooks/browser-apis/usePageVisibility/react.d.ts"
+    },
+    "./hooks/browser-apis/usePageVisibility/vue": {
+      "import": "./dist/esm/hooks/browser-apis/usePageVisibility/vue.js",
+      "require": "./dist/cjs/hooks/browser-apis/usePageVisibility/vue.js",
+      "types": "./dist/types/hooks/browser-apis/usePageVisibility/vue.d.ts"
+    },
+    "./hooks/browser-apis/usePageVisibility/angular": {
+      "import": "./dist/esm/hooks/browser-apis/usePageVisibility/angular.js",
+      "require": "./dist/cjs/hooks/browser-apis/usePageVisibility/angular.js",
+      "types": "./dist/types/hooks/browser-apis/usePageVisibility/angular.d.ts"
+    },
+    "./hooks/forms/useValidation/react": {
+      "import": "./dist/esm/hooks/forms/useValidation/react.js",
+      "require": "./dist/cjs/hooks/forms/useValidation/react.js",
+      "types": "./dist/types/hooks/forms/useValidation/react.d.ts"
+    },
+    "./hooks/forms/useValidation/vue": {
+      "import": "./dist/esm/hooks/forms/useValidation/vue.js",
+      "require": "./dist/cjs/hooks/forms/useValidation/vue.js",
+      "types": "./dist/types/hooks/forms/useValidation/vue.d.ts"
+    },
+    "./hooks/forms/useValidation/angular": {
+      "import": "./dist/esm/hooks/forms/useValidation/angular.js",
+      "require": "./dist/cjs/hooks/forms/useValidation/angular.js",
+      "types": "./dist/types/hooks/forms/useValidation/angular.d.ts"
+    },
+    "./hooks/animation/useSpring/react": {
+      "import": "./dist/esm/hooks/animation/useSpring/react.js",
+      "require": "./dist/cjs/hooks/animation/useSpring/react.js",
+      "types": "./dist/types/hooks/animation/useSpring/react.d.ts"
+    },
+    "./hooks/animation/useSpring/vue": {
+      "import": "./dist/esm/hooks/animation/useSpring/vue.js",
+      "require": "./dist/cjs/hooks/animation/useSpring/vue.js",
+      "types": "./dist/types/hooks/animation/useSpring/vue.d.ts"
+    },
+    "./hooks/animation/useSpring/angular": {
+      "import": "./dist/esm/hooks/animation/useSpring/angular.js",
+      "require": "./dist/cjs/hooks/animation/useSpring/angular.js",
+      "types": "./dist/types/hooks/animation/useSpring/angular.d.ts"
+    },
+    "./hooks/browser-apis/useFullscreen/react": {
+      "import": "./dist/esm/hooks/browser-apis/useFullscreen/react.js",
+      "require": "./dist/cjs/hooks/browser-apis/useFullscreen/react.js",
+      "types": "./dist/types/hooks/browser-apis/useFullscreen/react.d.ts"
+    },
+    "./hooks/browser-apis/useFullscreen/vue": {
+      "import": "./dist/esm/hooks/browser-apis/useFullscreen/vue.js",
+      "require": "./dist/cjs/hooks/browser-apis/useFullscreen/vue.js",
+      "types": "./dist/types/hooks/browser-apis/useFullscreen/vue.d.ts"
+    },
+    "./hooks/browser-apis/useFullscreen/angular": {
+      "import": "./dist/esm/hooks/browser-apis/useFullscreen/angular.js",
+      "require": "./dist/cjs/hooks/browser-apis/useFullscreen/angular.js",
+      "types": "./dist/types/hooks/browser-apis/useFullscreen/angular.d.ts"
+    },
+    "./hooks/data-async/useSWR/react": {
+      "import": "./dist/esm/hooks/data-async/useSWR/react.js",
+      "require": "./dist/cjs/hooks/data-async/useSWR/react.js",
+      "types": "./dist/types/hooks/data-async/useSWR/react.d.ts"
+    },
+    "./hooks/data-async/useSWR/vue": {
+      "import": "./dist/esm/hooks/data-async/useSWR/vue.js",
+      "require": "./dist/cjs/hooks/data-async/useSWR/vue.js",
+      "types": "./dist/types/hooks/data-async/useSWR/vue.d.ts"
+    },
+    "./hooks/data-async/useSWR/angular": {
+      "import": "./dist/esm/hooks/data-async/useSWR/angular.js",
+      "require": "./dist/cjs/hooks/data-async/useSWR/angular.js",
+      "types": "./dist/types/hooks/data-async/useSWR/angular.d.ts"
+    },
+    "./hooks/device-connectivity/useBattery/react": {
+      "import": "./dist/esm/hooks/device-connectivity/useBattery/react.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useBattery/react.js",
+      "types": "./dist/types/hooks/device-connectivity/useBattery/react.d.ts"
+    },
+    "./hooks/device-connectivity/useBattery/vue": {
+      "import": "./dist/esm/hooks/device-connectivity/useBattery/vue.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useBattery/vue.js",
+      "types": "./dist/types/hooks/device-connectivity/useBattery/vue.d.ts"
+    },
+    "./hooks/device-connectivity/useBattery/angular": {
+      "import": "./dist/esm/hooks/device-connectivity/useBattery/angular.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useBattery/angular.js",
+      "types": "./dist/types/hooks/device-connectivity/useBattery/angular.d.ts"
+    },
+    "./hooks/device-connectivity/useGeolocation/react": {
+      "import": "./dist/esm/hooks/device-connectivity/useGeolocation/react.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useGeolocation/react.js",
+      "types": "./dist/types/hooks/device-connectivity/useGeolocation/react.d.ts"
+    },
+    "./hooks/device-connectivity/useGeolocation/vue": {
+      "import": "./dist/esm/hooks/device-connectivity/useGeolocation/vue.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useGeolocation/vue.js",
+      "types": "./dist/types/hooks/device-connectivity/useGeolocation/vue.d.ts"
+    },
+    "./hooks/device-connectivity/useGeolocation/angular": {
+      "import": "./dist/esm/hooks/device-connectivity/useGeolocation/angular.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useGeolocation/angular.js",
+      "types": "./dist/types/hooks/device-connectivity/useGeolocation/angular.d.ts"
+    },
+    "./hooks/device-connectivity/useMousePosition/react": {
+      "import": "./dist/esm/hooks/device-connectivity/useMousePosition/react.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useMousePosition/react.js",
+      "types": "./dist/types/hooks/device-connectivity/useMousePosition/react.d.ts"
+    },
+    "./hooks/device-connectivity/useMousePosition/vue": {
+      "import": "./dist/esm/hooks/device-connectivity/useMousePosition/vue.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useMousePosition/vue.js",
+      "types": "./dist/types/hooks/device-connectivity/useMousePosition/vue.d.ts"
+    },
+    "./hooks/device-connectivity/useMousePosition/angular": {
+      "import": "./dist/esm/hooks/device-connectivity/useMousePosition/angular.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useMousePosition/angular.js",
+      "types": "./dist/types/hooks/device-connectivity/useMousePosition/angular.d.ts"
+    },
+    "./hooks/device-connectivity/useOnline/react": {
+      "import": "./dist/esm/hooks/device-connectivity/useOnline/react.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useOnline/react.js",
+      "types": "./dist/types/hooks/device-connectivity/useOnline/react.d.ts"
+    },
+    "./hooks/device-connectivity/useOnline/vue": {
+      "import": "./dist/esm/hooks/device-connectivity/useOnline/vue.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useOnline/vue.js",
+      "types": "./dist/types/hooks/device-connectivity/useOnline/vue.d.ts"
+    },
+    "./hooks/device-connectivity/useOnline/angular": {
+      "import": "./dist/esm/hooks/device-connectivity/useOnline/angular.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useOnline/angular.js",
+      "types": "./dist/types/hooks/device-connectivity/useOnline/angular.d.ts"
+    },
+    "./hooks/device-connectivity/useWindowSize/react": {
+      "import": "./dist/esm/hooks/device-connectivity/useWindowSize/react.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useWindowSize/react.js",
+      "types": "./dist/types/hooks/device-connectivity/useWindowSize/react.d.ts"
+    },
+    "./hooks/device-connectivity/useWindowSize/vue": {
+      "import": "./dist/esm/hooks/device-connectivity/useWindowSize/vue.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useWindowSize/vue.js",
+      "types": "./dist/types/hooks/device-connectivity/useWindowSize/vue.d.ts"
+    },
+    "./hooks/device-connectivity/useWindowSize/angular": {
+      "import": "./dist/esm/hooks/device-connectivity/useWindowSize/angular.js",
+      "require": "./dist/cjs/hooks/device-connectivity/useWindowSize/angular.js",
+      "types": "./dist/types/hooks/device-connectivity/useWindowSize/angular.d.ts"
+    },
+    "./hooks/dom-events/useClickOutside/react": {
+      "import": "./dist/esm/hooks/dom-events/useClickOutside/react.js",
+      "require": "./dist/cjs/hooks/dom-events/useClickOutside/react.js",
+      "types": "./dist/types/hooks/dom-events/useClickOutside/react.d.ts"
+    },
+    "./hooks/dom-events/useClickOutside/vue": {
+      "import": "./dist/esm/hooks/dom-events/useClickOutside/vue.js",
+      "require": "./dist/cjs/hooks/dom-events/useClickOutside/vue.js",
+      "types": "./dist/types/hooks/dom-events/useClickOutside/vue.d.ts"
+    },
+    "./hooks/dom-events/useClickOutside/angular": {
+      "import": "./dist/esm/hooks/dom-events/useClickOutside/angular.js",
+      "require": "./dist/cjs/hooks/dom-events/useClickOutside/angular.js",
+      "types": "./dist/types/hooks/dom-events/useClickOutside/angular.d.ts"
+    },
+    "./hooks/dom-events/useMutationObserver/react": {
+      "import": "./dist/esm/hooks/dom-events/useMutationObserver/react.js",
+      "require": "./dist/cjs/hooks/dom-events/useMutationObserver/react.js",
+      "types": "./dist/types/hooks/dom-events/useMutationObserver/react.d.ts"
+    },
+    "./hooks/dom-events/useMutationObserver/vue": {
+      "import": "./dist/esm/hooks/dom-events/useMutationObserver/vue.js",
+      "require": "./dist/cjs/hooks/dom-events/useMutationObserver/vue.js",
+      "types": "./dist/types/hooks/dom-events/useMutationObserver/vue.d.ts"
+    },
+    "./hooks/dom-events/useMutationObserver/angular": {
+      "import": "./dist/esm/hooks/dom-events/useMutationObserver/angular.js",
+      "require": "./dist/cjs/hooks/dom-events/useMutationObserver/angular.js",
+      "types": "./dist/types/hooks/dom-events/useMutationObserver/angular.d.ts"
+    },
+    "./hooks/forms/useForm/react": {
+      "import": "./dist/esm/hooks/forms/useForm/react.js",
+      "require": "./dist/cjs/hooks/forms/useForm/react.js",
+      "types": "./dist/types/hooks/forms/useForm/react.d.ts"
+    },
+    "./hooks/forms/useForm/vue": {
+      "import": "./dist/esm/hooks/forms/useForm/vue.js",
+      "require": "./dist/cjs/hooks/forms/useForm/vue.js",
+      "types": "./dist/types/hooks/forms/useForm/vue.d.ts"
+    },
+    "./hooks/forms/useForm/angular": {
+      "import": "./dist/esm/hooks/forms/useForm/angular.js",
+      "require": "./dist/cjs/hooks/forms/useForm/angular.js",
+      "types": "./dist/types/hooks/forms/useForm/angular.d.ts"
+    },
+    "./hooks/state-ui/useBoolean/react": {
+      "import": "./dist/esm/hooks/state-ui/useBoolean/react.js",
+      "require": "./dist/cjs/hooks/state-ui/useBoolean/react.js",
+      "types": "./dist/types/hooks/state-ui/useBoolean/react.d.ts"
+    },
+    "./hooks/state-ui/useBoolean/vue": {
+      "import": "./dist/esm/hooks/state-ui/useBoolean/vue.js",
+      "require": "./dist/cjs/hooks/state-ui/useBoolean/vue.js",
+      "types": "./dist/types/hooks/state-ui/useBoolean/vue.d.ts"
+    },
+    "./hooks/state-ui/useBoolean/angular": {
+      "import": "./dist/esm/hooks/state-ui/useBoolean/angular.js",
+      "require": "./dist/cjs/hooks/state-ui/useBoolean/angular.js",
+      "types": "./dist/types/hooks/state-ui/useBoolean/angular.d.ts"
+    },
+    "./hooks/storage/useSessionStorage/react": {
+      "import": "./dist/esm/hooks/storage/useSessionStorage/react.js",
+      "require": "./dist/cjs/hooks/storage/useSessionStorage/react.js",
+      "types": "./dist/types/hooks/storage/useSessionStorage/react.d.ts"
+    },
+    "./hooks/storage/useSessionStorage/vue": {
+      "import": "./dist/esm/hooks/storage/useSessionStorage/vue.js",
+      "require": "./dist/cjs/hooks/storage/useSessionStorage/vue.js",
+      "types": "./dist/types/hooks/storage/useSessionStorage/vue.d.ts"
+    },
+    "./hooks/storage/useSessionStorage/angular": {
+      "import": "./dist/esm/hooks/storage/useSessionStorage/angular.js",
+      "require": "./dist/cjs/hooks/storage/useSessionStorage/angular.js",
+      "types": "./dist/types/hooks/storage/useSessionStorage/angular.d.ts"
+    },
+    "./hooks/state-ui/usePrevious/react": {
+      "import": "./dist/esm/hooks/state-ui/usePrevious/react.js",
+      "require": "./dist/cjs/hooks/state-ui/usePrevious/react.js",
+      "types": "./dist/types/hooks/state-ui/usePrevious/react.d.ts"
+    },
+    "./hooks/state-ui/usePrevious/vue": {
+      "import": "./dist/esm/hooks/state-ui/usePrevious/vue.js",
+      "require": "./dist/cjs/hooks/state-ui/usePrevious/vue.js",
+      "types": "./dist/types/hooks/state-ui/usePrevious/vue.d.ts"
+    },
+    "./hooks/state-ui/usePrevious/angular": {
+      "import": "./dist/esm/hooks/state-ui/usePrevious/angular.js",
+      "require": "./dist/cjs/hooks/state-ui/usePrevious/angular.js",
+      "types": "./dist/types/hooks/state-ui/usePrevious/angular.d.ts"
+    },
+    "./hooks/state-ui/useClipboard/react": {
+      "import": "./dist/esm/hooks/state-ui/useClipboard/react.js",
+      "require": "./dist/cjs/hooks/state-ui/useClipboard/react.js",
+      "types": "./dist/types/hooks/state-ui/useClipboard/react.d.ts"
+    },
+    "./hooks/state-ui/useClipboard/vue": {
+      "import": "./dist/esm/hooks/state-ui/useClipboard/vue.js",
+      "require": "./dist/cjs/hooks/state-ui/useClipboard/vue.js",
+      "types": "./dist/types/hooks/state-ui/useClipboard/vue.d.ts"
+    },
+    "./hooks/state-ui/useClipboard/angular": {
+      "import": "./dist/esm/hooks/state-ui/useClipboard/angular.js",
+      "require": "./dist/cjs/hooks/state-ui/useClipboard/angular.js",
+      "types": "./dist/types/hooks/state-ui/useClipboard/angular.d.ts"
+    },
+    "./hooks/state-ui/useHover/react": {
+      "import": "./dist/esm/hooks/state-ui/useHover/react.js",
+      "require": "./dist/cjs/hooks/state-ui/useHover/react.js",
+      "types": "./dist/types/hooks/state-ui/useHover/react.d.ts"
+    },
+    "./hooks/state-ui/useHover/vue": {
+      "import": "./dist/esm/hooks/state-ui/useHover/vue.js",
+      "require": "./dist/cjs/hooks/state-ui/useHover/vue.js",
+      "types": "./dist/types/hooks/state-ui/useHover/vue.d.ts"
+    },
+    "./hooks/state-ui/useHover/angular": {
+      "import": "./dist/esm/hooks/state-ui/useHover/angular.js",
+      "require": "./dist/cjs/hooks/state-ui/useHover/angular.js",
+      "types": "./dist/types/hooks/state-ui/useHover/angular.d.ts"
+    },
+    "./hooks/data-async/useInterval/react": {
+      "import": "./dist/esm/hooks/data-async/useInterval/react.js",
+      "require": "./dist/cjs/hooks/data-async/useInterval/react.js",
+      "types": "./dist/types/hooks/data-async/useInterval/react.d.ts"
+    },
+    "./hooks/data-async/useInterval/vue": {
+      "import": "./dist/esm/hooks/data-async/useInterval/vue.js",
+      "require": "./dist/cjs/hooks/data-async/useInterval/vue.js",
+      "types": "./dist/types/hooks/data-async/useInterval/vue.d.ts"
+    },
+    "./hooks/data-async/useInterval/angular": {
+      "import": "./dist/esm/hooks/data-async/useInterval/angular.js",
+      "require": "./dist/cjs/hooks/data-async/useInterval/angular.js",
+      "types": "./dist/types/hooks/data-async/useInterval/angular.d.ts"
+    },
+    "./hooks/data-async/useTimeout/react": {
+      "import": "./dist/esm/hooks/data-async/useTimeout/react.js",
+      "require": "./dist/cjs/hooks/data-async/useTimeout/react.js",
+      "types": "./dist/types/hooks/data-async/useTimeout/react.d.ts"
+    },
+    "./hooks/data-async/useTimeout/vue": {
+      "import": "./dist/esm/hooks/data-async/useTimeout/vue.js",
+      "require": "./dist/cjs/hooks/data-async/useTimeout/vue.js",
+      "types": "./dist/types/hooks/data-async/useTimeout/vue.d.ts"
+    },
+    "./hooks/data-async/useTimeout/angular": {
+      "import": "./dist/esm/hooks/data-async/useTimeout/angular.js",
+      "require": "./dist/cjs/hooks/data-async/useTimeout/angular.js",
+      "types": "./dist/types/hooks/data-async/useTimeout/angular.d.ts"
+    },
+    "./hooks/data-async/useIdle/react": {
+      "import": "./dist/esm/hooks/data-async/useIdle/react.js",
+      "require": "./dist/cjs/hooks/data-async/useIdle/react.js",
+      "types": "./dist/types/hooks/data-async/useIdle/react.d.ts"
+    },
+    "./hooks/data-async/useIdle/vue": {
+      "import": "./dist/esm/hooks/data-async/useIdle/vue.js",
+      "require": "./dist/cjs/hooks/data-async/useIdle/vue.js",
+      "types": "./dist/types/hooks/data-async/useIdle/vue.d.ts"
+    },
+    "./hooks/data-async/useIdle/angular": {
+      "import": "./dist/esm/hooks/data-async/useIdle/angular.js",
+      "require": "./dist/cjs/hooks/data-async/useIdle/angular.js",
+      "types": "./dist/types/hooks/data-async/useIdle/angular.d.ts"
+    },
+    "./hooks/data-async/useDebouncedValue/react": {
+      "import": "./dist/esm/hooks/data-async/useDebouncedValue/react.js",
+      "require": "./dist/cjs/hooks/data-async/useDebouncedValue/react.js",
+      "types": "./dist/types/hooks/data-async/useDebouncedValue/react.d.ts"
+    },
+    "./hooks/data-async/useDebouncedValue/vue": {
+      "import": "./dist/esm/hooks/data-async/useDebouncedValue/vue.js",
+      "require": "./dist/cjs/hooks/data-async/useDebouncedValue/vue.js",
+      "types": "./dist/types/hooks/data-async/useDebouncedValue/vue.d.ts"
+    },
+    "./hooks/data-async/useDebouncedValue/angular": {
+      "import": "./dist/esm/hooks/data-async/useDebouncedValue/angular.js",
+      "require": "./dist/cjs/hooks/data-async/useDebouncedValue/angular.js",
+      "types": "./dist/types/hooks/data-async/useDebouncedValue/angular.d.ts"
+    },
+    "./hooks/dom-events/useKeyPress/react": {
+      "import": "./dist/esm/hooks/dom-events/useKeyPress/react.js",
+      "require": "./dist/cjs/hooks/dom-events/useKeyPress/react.js",
+      "types": "./dist/types/hooks/dom-events/useKeyPress/react.d.ts"
+    },
+    "./hooks/dom-events/useKeyPress/vue": {
+      "import": "./dist/esm/hooks/dom-events/useKeyPress/vue.js",
+      "require": "./dist/cjs/hooks/dom-events/useKeyPress/vue.js",
+      "types": "./dist/types/hooks/dom-events/useKeyPress/vue.d.ts"
+    },
+    "./hooks/dom-events/useKeyPress/angular": {
+      "import": "./dist/esm/hooks/dom-events/useKeyPress/angular.js",
+      "require": "./dist/cjs/hooks/dom-events/useKeyPress/angular.js",
+      "types": "./dist/types/hooks/dom-events/useKeyPress/angular.d.ts"
+    },
+    "./hooks/browser-apis/useLockBodyScroll/react": {
+      "import": "./dist/esm/hooks/browser-apis/useLockBodyScroll/react.js",
+      "require": "./dist/cjs/hooks/browser-apis/useLockBodyScroll/react.js",
+      "types": "./dist/types/hooks/browser-apis/useLockBodyScroll/react.d.ts"
+    },
+    "./hooks/browser-apis/useLockBodyScroll/vue": {
+      "import": "./dist/esm/hooks/browser-apis/useLockBodyScroll/vue.js",
+      "require": "./dist/cjs/hooks/browser-apis/useLockBodyScroll/vue.js",
+      "types": "./dist/types/hooks/browser-apis/useLockBodyScroll/vue.d.ts"
+    },
+    "./hooks/browser-apis/useLockBodyScroll/angular": {
+      "import": "./dist/esm/hooks/browser-apis/useLockBodyScroll/angular.js",
+      "require": "./dist/cjs/hooks/browser-apis/useLockBodyScroll/angular.js",
+      "types": "./dist/types/hooks/browser-apis/useLockBodyScroll/angular.d.ts"
+    },
+    "./hooks/media/usePreferredColorScheme/react": {
+      "import": "./dist/esm/hooks/media/usePreferredColorScheme/react.js",
+      "require": "./dist/cjs/hooks/media/usePreferredColorScheme/react.js",
+      "types": "./dist/types/hooks/media/usePreferredColorScheme/react.d.ts"
+    },
+    "./hooks/media/usePreferredColorScheme/vue": {
+      "import": "./dist/esm/hooks/media/usePreferredColorScheme/vue.js",
+      "require": "./dist/cjs/hooks/media/usePreferredColorScheme/vue.js",
+      "types": "./dist/types/hooks/media/usePreferredColorScheme/vue.d.ts"
+    },
+    "./hooks/media/usePreferredColorScheme/angular": {
+      "import": "./dist/esm/hooks/media/usePreferredColorScheme/angular.js",
+      "require": "./dist/cjs/hooks/media/usePreferredColorScheme/angular.js",
+      "types": "./dist/types/hooks/media/usePreferredColorScheme/angular.d.ts"
+    }
   },
+  "scripts": {
+    "build": "npm run build:esm && npm run build:cjs && npm run build:types",
+    "build:esm": "tsc --module es2020 --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist/types",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write .",
+    "prepublishOnly": "npm run build",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "react",
+    "vue",
+    "angular",
+    "hooks",
+    "composables",
+    "signals",
+    "frontend",
+    "typescript",
+    "browser-api",
+    "tree-shaking"
+  ],
+  "author": "Tri Hooks Team",
+  "license": "MIT",
   "devDependencies": {
-    "typescript": "^5.0.0",
+    "@angular/core": "^17.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.28.6",
+    "@babel/preset-env": "^7.28.6",
+    "@babel/preset-typescript": "^7.28.5",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^29.0.0",
+    "@types/node": "^18.0.0",
     "@types/react": "^18.0.0",
-    "@types/node": "^18.0.0"
-  }
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vue/test-utils": "^2.4.6",
+    "angular": "^1.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.0.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "prettier": "^3.0.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.0.0",
+    "vue": "^3.0.0"
+  },
+  "peerDependencies": {
+    "@angular/core": "^16.0.0 || ^17.0.0",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "vue": "^3.0.0"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE",
+    "CONTRIBUTING.md"
+  ]
 }

@@ -1,18 +1,24 @@
-import { ref, readonly } from 'vue';
+import { ref, Ref } from 'vue';
 
-export function useToggle(initialValue: boolean = false) {
-  const value = ref(initialValue);
+/**
+ * Toggle hook for boolean state management
+ * @param initialValue - Initial boolean value (default: false)
+ * @returns Object with value, toggle, and setValue
+ */
+export function useToggle(initialValue = false) {
+  const value: Ref<boolean> = ref(initialValue);
 
-  const toggle = (nextValue?: boolean | Event) => {
-    if (typeof nextValue === 'boolean') {
-      value.value = nextValue;
-    } else {
-      value.value = !value.value;
-    }
+  const toggle = () => {
+    value.value = !value.value;
+  };
+
+  const setValue = (newValue: boolean) => {
+    value.value = newValue;
   };
 
   return {
-    value: readonly(value),
-    toggle
+    value,
+    toggle,
+    setValue,
   };
 }

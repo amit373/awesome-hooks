@@ -1,29 +1,109 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
-export interface Toast {
-  id: string;
-  message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
+type ToastType = 'success' | 'error' | 'warning' | 'info';
+type ToastPosition =
+  | 'top-right'
+  | 'top-left'
+  | 'bottom-right'
+  | 'bottom-left'
+  | 'top-center'
+  | 'bottom-center';
+
+interface ToastOptions {
+  type?: ToastType;
+  position?: ToastPosition;
+  duration?: number;
 }
 
+interface Toast {
+  id: string;
+  message: string;
+  type: ToastType;
+  position: ToastPosition;
+}
+
+interface UseToastReturn {
+  toasts: Toast[];
+  addToast: (message: string, options?: ToastOptions) => void;
+  removeToast: (id: string) => void;
+  clearToasts: () => void;
+}
+
+/**
+ * An Angular service for managing toast notifications
+ * @param defaultPosition - Default position for toasts
+ * @returns Toast management functions
+ */
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  private toastsSubject = new BehaviorSubject<Toast[]>([]);
-  toasts$ = this.toastsSubject.asObservable();
+  private toastsSignal = signal<Toast[]>([]);
 
-  show(message: string, type: Toast['type'] = 'info', duration = 3000) {
-    const id = Math.random().toString(36).substr(2, 9);
-    const current = this.toastsSubject.value;
-    this.toastsSubject.next([...current, { id, message, type }]);
+  readonly toasts$ = this.toastsSignal.asReadonly();
+
+  constructor(private defaultPosition: ToastPosition = 'top-right') {}
+
+  /**
+   * Add a new toast notification
+   * @param message The message to display in the toast
+   * @param options Additional options for the toast
+   */
+  addToast(message: string, options: ToastOptions = {}): void {
+    const id = Math.random().toString(36).substring(2, 9);
+    const {
+      type = 'info',
+      position = this.defaultPosition,
+      duration = 3000,
+    } = options;
+
+    const newToast: Toast = {
+      id,
+      message,
+      type,
+      position,
+    };
+
+    this.toastsSignal.update(toasts => [...toasts, newToast]);
 
     if (duration > 0) {
-      setTimeout(() => this.remove(id), duration);
+      setTimeout(() => {
+        this.removeToast(id);
+      }, duration);
     }
   }
 
-  remove(id: string) {
-    const current = this.toastsSubject.value;
-    this.toastsSubject.next(current.filter(t => t.id !== id));
+  /**
+   * Remove a specific toast by ID
+   * @param id The ID of the toast to remove
+   */
+  removeToast(id: string): void {
+    this.toastsSignal.update(toasts => toasts.filter(toast => toast.id !== id));
   }
+
+  /**
+   * Clear all toasts
+   */
+  clearToasts(): void {
+    this.toastsSignal.set([]);
+  }
+}
+
+/**
+ * Factory function to create a ToastService instance
+ * @param defaultPosition - Default position for toasts
+ * @returns Toast management functions
+ */
+export function useToast(
+  defaultPosition: ToastPosition = 'top-right'
+): UseToastReturn {
+  const service = new ToastService(defaultPosition);
+
+  return {
+    get toasts() {
+      return service.toasts$();
+    },
+    addToast: (message: string, options?: ToastOptions) =>
+      service.addToast(message, options),
+    removeToast: (id: string) => service.removeToast(id),
+    clearToasts: () => service.clearToasts(),
+  };
 }

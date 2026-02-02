@@ -1,45 +1,43 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { signal, WritableSignal } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class CounterService {
-  private _count = new BehaviorSubject<number>(0);
-  public count$ = this._count.asObservable();
-  
-  private initialValue = 0;
-  private min?: number;
-  private max?: number;
+interface UseCounterReturn {
+  value: WritableSignal<number>;
+  increment: () => void;
+  decrement: () => void;
+  reset: () => void;
+  setValue: (value: number) => void;
+}
 
-  init(initialValue = 0, options: { min?: number, max?: number } = {}) {
-    this.initialValue = initialValue;
-    this.min = options.min;
-    this.max = options.max;
-    this._count.next(initialValue);
-  }
+/**
+ * Counter hook for numeric state management
+ * @param initialValue - Initial counter value (default: 0)
+ * @param step - Step increment/decrement value (default: 1)
+ * @returns Object with value signal and action methods
+ */
+export function useCounter(initialValue = 0, step = 1): UseCounterReturn {
+  const value: WritableSignal<number> = signal(initialValue);
 
-  get value() {
-    return this._count.value;
-  }
+  const increment = () => {
+    value.update(v => v + step);
+  };
 
-  increment() {
-    const next = this.value + 1;
-    if (this.max !== undefined && next > this.max) return;
-    this._count.next(next);
-  }
+  const decrement = () => {
+    value.update(v => v - step);
+  };
 
-  decrement() {
-    const next = this.value - 1;
-    if (this.min !== undefined && next < this.min) return;
-    this._count.next(next);
-  }
+  const reset = () => {
+    value.set(initialValue);
+  };
 
-  set(value: number) {
-    this._count.next(value);
-  }
+  const setValue = (newValue: number) => {
+    value.set(newValue);
+  };
 
-  reset() {
-    this._count.next(this.initialValue);
-  }
+  return {
+    value,
+    increment,
+    decrement,
+    reset,
+    setValue,
+  };
 }

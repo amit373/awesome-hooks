@@ -1,23 +1,37 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
-export function useHover<T extends HTMLElement>() {
-  const [value, setValue] = useState(false);
-  const ref = useRef<T>(null);
+/**
+ * Track hover state for an element
+ * @returns [ref callback to attach to element, isHovered]
+ */
+export function useHover<T extends HTMLElement = HTMLElement>(): [
+  (el: T | null) => void,
+  boolean
+] {
+  const [isHovered, setIsHovered] = useState(false);
+  const [node, setNode] = useState<T | null>(null);
 
-  const handleMouseOver = () => setValue(true);
-  const handleMouseOut = () => setValue(false);
+  const setRef = useCallback((el: T | null) => {
+    setNode(el);
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
 
   useEffect(() => {
-    const node = ref.current;
-    if (node) {
-      node.addEventListener('mouseover', handleMouseOver);
-      node.addEventListener('mouseout', handleMouseOut);
-      return () => {
-        node.removeEventListener('mouseover', handleMouseOver);
-        node.removeEventListener('mouseout', handleMouseOut);
-      };
-    }
-  }, [ref.current]);
+    if (!node) return;
+    node.addEventListener('mouseenter', handleMouseEnter);
+    node.addEventListener('mouseleave', handleMouseLeave);
+    return () => {
+      node.removeEventListener('mouseenter', handleMouseEnter);
+      node.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [node, handleMouseEnter, handleMouseLeave]);
 
-  return [ref, value] as const;
+  return [setRef, isHovered];
 }

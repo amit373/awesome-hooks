@@ -1,22 +1,24 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { signal, WritableSignal } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ToggleService {
-  private _value = new BehaviorSubject<boolean>(false);
-  public value$ = this._value.asObservable();
+/**
+ * Toggle hook for boolean state management
+ * @param initialValue - Initial boolean value (default: false)
+ * @returns Object with value signal, toggle, and setValue methods
+ */
+export function useToggle(initialValue = false) {
+  const value: WritableSignal<boolean> = signal(initialValue);
 
-  init(initialValue: boolean = false) {
-    this._value.next(initialValue);
-  }
+  const toggle = () => {
+    value.update(v => !v);
+  };
 
-  toggle(nextValue?: boolean) {
-    if (typeof nextValue === 'boolean') {
-      this._value.next(nextValue);
-    } else {
-      this._value.next(!this._value.value);
-    }
-  }
+  const setValue = (newValue: boolean) => {
+    value.set(newValue);
+  };
+
+  return {
+    value,
+    toggle,
+    setValue,
+  };
 }

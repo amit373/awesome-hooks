@@ -1,38 +1,90 @@
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { signal } from '@angular/core';
 
-@Injectable({ providedIn: 'root' })
-export class AnimationFrameService implements OnDestroy {
-  private frameSubject = new Subject<number>();
-  frame$ = this.frameSubject.asObservable();
-  private requestID: number | null = null;
-  private previousTime: number | undefined;
+interface UseAnimationFrameReturn {
+  frame: number;
+  fps: number;
+  start: () => void;
+  stop: () => void;
+  reset: () => void;
+}
 
-  constructor(private ngZone: NgZone) {}
+/**
+ * Angular function for managing animation frames with FPS tracking
+ * @returns Object with frame count, FPS, and control methods
+ */
+export function useAnimationFrame(): UseAnimationFrameReturn {
+  const frameSignal = signal(0);
+  const fpsSignal = signal(0);
+  let isActive = false;
+  let startTime = 0;
+  let frameCount = 0;
+  let animationFrameId: number | null = null;
 
-  start() {
-    this.ngZone.runOutsideAngular(() => {
-      const animate = (time: number) => {
-        if (this.previousTime !== undefined) {
-          const deltaTime = time - this.previousTime;
-          this.ngZone.run(() => this.frameSubject.next(deltaTime));
-        }
-        this.previousTime = time;
-        this.requestID = requestAnimationFrame(animate);
-      };
-      this.requestID = requestAnimationFrame(animate);
-    });
-  }
+  const calculateFps = () => {
+    const now = performance.now();
+    const delta = now - startTime;
+    if (delta > 1000) {
+      // Update FPS every second
+      const fpsValue = Math.round((frameCount * 1000) / delta);
+      fpsSignal.set(fpsValue);
 
-  stop() {
-    if (this.requestID) {
-      cancelAnimationFrame(this.requestID);
-      this.requestID = null;
-      this.previousTime = undefined;
+      // Reset for next calculation
+      startTime = now;
+      frameCount = 0;
     }
-  }
+  };
 
-  ngOnDestroy() {
-    this.stop();
-  }
+  const animate = () => {
+    if (!isActive) return;
+
+    frameSignal.set(frameSignal() + 1);
+    frameCount++;
+    calculateFps();
+
+    animationFrameId = requestAnimationFrame(animate);
+  };
+
+  const start = () => {
+    if (!isActive) {
+      isActive = true;
+      startTime = performance.now();
+      frameCount = 0;
+      animationFrameId = requestAnimationFrame(animate);
+    }
+  };
+
+  const stop = () => {
+    if (isActive && animationFrameId) {
+      isActive = false;
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+  };
+
+  const reset = () => {
+    stop();
+    frameSignal.set(0);
+    fpsSignal.set(0);
+    frameCount = 0;
+  };
+
+  // Start animation automatically
+  start();
+
+  // Return the current state and a cleanup function
+  const cleanup = () => {
+    stop();
+  };
+
+  return {
+    get frame() {
+      return frameSignal();
+    },
+    get fps() {
+      return fpsSignal();
+    },
+    start,
+    stop,
+    reset,
+  };
 }

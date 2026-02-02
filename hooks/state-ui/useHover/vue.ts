@@ -1,24 +1,47 @@
-import { ref, onMounted, onUnmounted, type Ref } from 'vue';
+import { onUnmounted, ref, Ref, watch } from 'vue';
 
-export function useHover(elementRef: Ref<HTMLElement | null>) {
+/**
+ * Track hover state for an element
+ * @returns Object with ref to attach and isHovered ref
+ */
+export function useHover<T extends HTMLElement = HTMLElement>(): {
+  ref: Ref<T | null>;
+  isHovered: Ref<boolean>;
+} {
+  const elementRef = ref<T | null>(null);
   const isHovered = ref(false);
 
-  const onEnter = () => isHovered.value = true;
-  const onLeave = () => isHovered.value = false;
+  const handleMouseEnter = () => {
+    isHovered.value = true;
+  };
 
-  onMounted(() => {
-    if (elementRef.value) {
-      elementRef.value.addEventListener('mouseenter', onEnter);
-      elementRef.value.addEventListener('mouseleave', onLeave);
-    }
-  });
+  const handleMouseLeave = () => {
+    isHovered.value = false;
+  };
+
+  const stopWatch = watch(
+    elementRef,
+    (node, _, onCleanup) => {
+      if (node) {
+        node.addEventListener('mouseenter', handleMouseEnter);
+        node.addEventListener('mouseleave', handleMouseLeave);
+        onCleanup(() => {
+          node.removeEventListener('mouseenter', handleMouseEnter);
+          node.removeEventListener('mouseleave', handleMouseLeave);
+        });
+      }
+    },
+    { immediate: true }
+  );
 
   onUnmounted(() => {
-    if (elementRef.value) {
-      elementRef.value.removeEventListener('mouseenter', onEnter);
-      elementRef.value.removeEventListener('mouseleave', onLeave);
+    stopWatch();
+    const node = elementRef.value;
+    if (node) {
+      node.removeEventListener('mouseenter', handleMouseEnter);
+      node.removeEventListener('mouseleave', handleMouseLeave);
     }
   });
 
-  return isHovered;
+  return { ref: elementRef as Ref<T | null>, isHovered };
 }

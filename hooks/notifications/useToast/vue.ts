@@ -1,26 +1,82 @@
-import { ref } from 'vue';
+import { shallowRef } from 'vue';
 
-export interface Toast {
-  id: string;
-  message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
+type ToastType = 'success' | 'error' | 'warning' | 'info';
+type ToastPosition =
+  | 'top-right'
+  | 'top-left'
+  | 'bottom-right'
+  | 'bottom-left'
+  | 'top-center'
+  | 'bottom-center';
+
+interface ToastOptions {
+  type?: ToastType;
+  position?: ToastPosition;
+  duration?: number;
 }
 
-const toasts = ref<Toast[]>([]);
+interface Toast {
+  id: string;
+  message: string;
+  type: ToastType;
+  position: ToastPosition;
+}
 
-export function useToast() {
-  const removeToast = (id: string) => {
-    toasts.value = toasts.value.filter(t => t.id !== id);
-  };
+interface UseToastReturn {
+  toasts: Toast[];
+  addToast: (message: string, options?: ToastOptions) => void;
+  removeToast: (id: string) => void;
+  clearToasts: () => void;
+}
 
-  const addToast = (message: string, type: Toast['type'] = 'info', duration = 3000) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    toasts.value.push({ id, message, type });
+/**
+ * A Vue composable for managing toast notifications
+ * @param defaultPosition - Default position for toasts
+ * @returns Toast management functions
+ */
+export function useToast(
+  defaultPosition: ToastPosition = 'top-right'
+): UseToastReturn {
+  const toasts = shallowRef<Toast[]>([]);
+
+  const addToast = (message: string, options: ToastOptions = {}) => {
+    const id = Math.random().toString(36).substring(2, 9);
+    const {
+      type = 'info',
+      position = defaultPosition,
+      duration = 3000,
+    } = options;
+
+    const newToast: Toast = {
+      id,
+      message,
+      type,
+      position,
+    };
+
+    toasts.value = [...toasts.value, newToast];
 
     if (duration > 0) {
-      setTimeout(() => removeToast(id), duration);
+      setTimeout(() => {
+        removeToast(id);
+      }, duration);
     }
   };
 
-  return { toasts, addToast, removeToast };
+  const removeToast = (id: string) => {
+    toasts.value = toasts.value.filter(toast => toast.id !== id);
+  };
+
+  const clearToasts = () => {
+    toasts.value = [];
+  };
+
+  return {
+    get toasts() {
+      return toasts.value;
+    },
+    addToast,
+    removeToast,
+    clearToasts,
+  };
 }

@@ -1,34 +1,60 @@
-import { useState, useEffect } from 'react';
-import { useThrottle } from '../../state-ui/useThrottle/react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
-export function useIdle(ms: number = 3000) {
+interface UseIdleOptions {
+  timeout?: number;
+  events?: string[];
+}
+
+/**
+ * Detect when the user has been idle for a given timeout
+ * @param timeout - Idle timeout in ms (default: 60000)
+ * @param options - Optional events to listen for (default: mousemove, keydown, etc.)
+ * @returns [isIdle, reset] - isIdle true when idle for timeout ms; reset to reset timer
+ */
+export function useIdle(
+  timeout = 60_000,
+  options: UseIdleOptions = {}
+): [boolean, () => void] {
+  const eventsRef = useRef(options.events ?? ['mousemove', 'keydown', 'scroll', 'touchstart']);
+  eventsRef.current = options.events ?? ['mousemove', 'keydown', 'scroll', 'touchstart'];
   const [isIdle, setIsIdle] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mountedRef = useRef(true);
+
+  const reset = useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    setIsIdle(false);
+    timerRef.current = setTimeout(() => {
+      if (mountedRef.current) setIsIdle(true);
+    }, timeout);
+  }, [timeout]);
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
+    mountedRef.current = true;
+    reset();
 
-    const handleActivity = () => {
-      setIsIdle(false);
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => setIsIdle(true), ms);
-    };
+    const handleEvent = () => reset();
+    const events = eventsRef.current;
 
-    // Events to track
-    const events = ['mousemove', 'keydown', 'wheel', 'touchstart'];
-    
-    // Throttle the event handler usually, but here just resetting timer is cheap enough
-    // or use a throttled version if needed for performance on mousemove
-    
-    events.forEach(event => window.addEventListener(event, handleActivity));
-    
-    // Start initial timer
-    timeoutId = setTimeout(() => setIsIdle(true), ms);
+    events.forEach((ev) => {
+      if (typeof window !== 'undefined') {
+        window.addEventListener(ev, handleEvent);
+      }
+    });
 
     return () => {
-      events.forEach(event => window.removeEventListener(event, handleActivity));
-      clearTimeout(timeoutId);
+      mountedRef.current = false;
+      events.forEach((ev) => {
+        if (typeof window !== 'undefined') {
+          window.removeEventListener(ev, handleEvent);
+        }
+      });
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [ms]);
+  }, [timeout, reset]);
 
-  return isIdle;
+  return [isIdle, reset];
 }
